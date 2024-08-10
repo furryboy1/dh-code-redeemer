@@ -1,0 +1,16 @@
+local codes={
+    "TRADEME!",
+    "DAUP",
+    "pumpkins2023",
+    "RUBY",
+    "BLAZE",
+    "PENGUIN",
+    "UNICORN",
+    "CAT"
+}
+local plrs = game:GetService("Players")
+local v1 = game:GetService("ReplicatedStorage").MainEvent
+if not game:IsLoaded()then game.Loaded:Wait()task.wait(2)end
+repeat task.wait(0.25)until plrs and plrs.LocalPlayer task.wait(1)
+repeat task.wait(0.25)until plrs.LocalPlayer.Character and plrs.LocalPlayer.Character:FindFirstChild("Humanoid")and plrs.LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR")task.wait(2)
+for _, v4 in pairs(codes)do v1:FireServer("EnterPromoCode",v4)print("Redeemed Code: "..v4)task.wait(5)end
