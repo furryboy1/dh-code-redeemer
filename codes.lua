@@ -1,5 +1,8 @@
 -- made by furryboy, fuck you skids
 return {
+    ["credit"] = {
+        ["name"] = "Furryboy",
+    },
     "TRADEME!",
     "DAUP",
     "pumpkins2023",
