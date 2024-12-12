@@ -1,9 +1,7 @@
 -- made by furryboy, fuck you skids
 return {
     totalcash = 2190000,
-    credit = {
-        name = "Furryboy",
-    },
+    credit = "FurryBoy",
     codes = {
         "TRADEME!",
         "DAUP",
