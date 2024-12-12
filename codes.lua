@@ -1,6 +1,6 @@
 -- made by furryboy, fuck you skids
 return {
-    total_cash = 2190000,
+    totalcash = 2190000,
     credit = {
         name = "Furryboy",
     },
