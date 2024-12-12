@@ -1,5 +1,5 @@
-// made by furryboy, fuck you skids
-[
+-- made by furryboy, fuck you skids
+return {
     "TRADEME!",
     "DAUP",
     "pumpkins2023",
@@ -8,4 +8,4 @@
     "HALLOWEEN2024",
     "THANKSGIVING24",
     "EMERALD"
-]
+}
