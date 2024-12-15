@@ -1,16 +1,20 @@
-local codes={
-    "TRADEME!",
-    "DAUP",
-    "pumpkins2023",
-    "RUBY",
-    "BLAZE",
-    "PENGUIN",
-    "UNICORN",
-    "CAT"
-}
-local plrs = game:GetService("Players")
-local v1 = game:GetService("ReplicatedStorage").MainEvent
-if not game:IsLoaded()then game.Loaded:Wait()task.wait(2)end
-repeat task.wait(0.25)until plrs and plrs.LocalPlayer task.wait(1)
-repeat task.wait(0.25)until plrs.LocalPlayer.Character and plrs.LocalPlayer.Character:FindFirstChild("Humanoid")and plrs.LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR")task.wait(2)
-for _, v4 in pairs(codes)do v1:FireServer("EnterPromoCode",v4)print("Redeemed Code: "..v4)task.wait(5)end
+-- https://github.com/FurryBoyYT/dh-code-redeemer/raw/refs/heads/main/codes.lua
+if not game:IsLoaded()then game.Loaded:Wait()wait(2)end
+local codes = loadstring(game:HttpGet("https://github.com/FurryBoyYT/dh-code-redeemer/raw/refs/heads/main/codes.lua"))()
+local plrs = cloneref(game:GetService("Players"))
+local MainEvent = cloneref(game:GetService("ReplicatedStorage")).MainEvent
+local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
+formatted = formatted:reverse():gsub("^,", "")
+
+print("Credit:", codes.credit)
+print("Total DHC will be redeemed:", formatted)
+
+repeat wait(0.25)until plrs and plrs.LocalPlayer wait(1)
+repeat wait(0.25)until plrs.LocalPlayer.Character and plrs.LocalPlayer.Character:FindFirstChild("Humanoid")and plrs.LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR")wait(2)
+
+for _, code in pairs(codes.codes) do
+    MainEvent:FireServer("EnterPromoCode", code)
+    print("Redeemed Code:", code)
+    wait(3.5)
+end
+print("Finished redeeming!")
