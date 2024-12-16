@@ -13,7 +13,7 @@ return {
         "THANKSGIVING24",
         "EMERALD",
         "GIFT24",
-        "BenoxaHouse2",
+        "BenoxaHouse24",
         "HOODMAS24",
         "GRUMPY",
         "GPO2"
