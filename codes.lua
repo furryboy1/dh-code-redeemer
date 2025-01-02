@@ -11,7 +11,6 @@ return {
         "DACARNIVAL",
         "HALLOWEEN2024",
         "THANKSGIVING24",
-        "EMERALD",
         "GIFT24",
         "BenoxaHouse24",
         "HOODMAS24",
