@@ -10,11 +10,6 @@ return {
         "RUBY",
         "DACARNIVAL",
         "HALLOWEEN2024",
-        "THANKSGIVING24",
-        "GIFT24",
-        "BenoxaHouse24",
-        "HOODMAS24",
-        "GRUMPY",
-        "GPO2"
+        "THANKSGIVING24"
     }
 }
