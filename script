@@ -15,6 +15,7 @@ repeat wait(0.25)until plrs.LocalPlayer.Character and plrs.LocalPlayer.Character
 for _, code in pairs(codes.codes) do
     MainEvent:FireServer("EnterPromoCode", code)
     print("Redeemed Code:", code)
-    wait(3.5)
+    if #codes.codes == 0 then break end
+    wait(3.5) -- redeeming codes in da hood has a rate limit of 3 seconds
 end
 print("Finished redeeming!")
