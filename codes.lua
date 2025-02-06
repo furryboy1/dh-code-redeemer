@@ -1,7 +1,7 @@
 -- made by furryboy, fuck you skids
 -- https://github.com/FurryBoyYT/dh-code-redeemer/raw/refs/heads/main/codes.lua
 return {
-    totalcash = 2790000,
+    totalcash = 3190000,
     credit = "FurryBoy",
     codes = {
         "TRADEME!",
@@ -13,6 +13,8 @@ return {
         "THANKSGIVING24",
         "SHRIMP",
         "VIP",
-        "2025"
+        "2025",
+        "Beary",
+        "ShortCake"
     }
 }
