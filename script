@@ -12,10 +12,10 @@ print("Total DHC will be redeemed:", formatted)
 repeat wait(0.25)until plrs and plrs.LocalPlayer wait(1)
 repeat wait(0.25)until plrs.LocalPlayer.Character and plrs.LocalPlayer.Character:FindFirstChild("Humanoid")and plrs.LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR")wait(2)
 
-for _, code in pairs(codes.codes) do
+for index, code in pairs(codes.codes) do
     MainEvent:FireServer("EnterPromoCode", code)
-    print("Redeemed Code:", code)
+    print("Redeemed Code [ " .. index .. " / " .. #codes.codes .. " ]: " .. code)
     if #codes.codes == 0 then break end
-    task.wait(10) -- redeeming codes in da hood has a rate limit of atleast 6 seconds
+    task.wait(10) -- redeeming codes in da hood has a rate limit of atleast 6 seconds but i recommend 10 seconds for safety reasons
 end
 print("Finished redeeming!")
