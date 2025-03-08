@@ -5,9 +5,12 @@ return {
     credit = 'FurryBoy',
     codes = {
         'TRADEME!',
+        'DAUP',
         'pumpkins2023',
         'DACARNIVAL',
+        'THANKSGIVING24',
         'HALLOWEEN2024',
+        'RUBY',
         'SHRIMP',
         'VIP',
         '2025',
