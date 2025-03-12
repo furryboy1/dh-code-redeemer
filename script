@@ -6,7 +6,7 @@ local MainEvent = cloneref(game:GetService("ReplicatedStorage")).MainEvent
 local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
 formatted = formatted:reverse():gsub("^,", "")
 
-print("Credit:", codes.credit)
+print("Credits:", codes.credit)
 print("Total DHC will be redeemed:", formatted)
 
 repeat wait(0.25)until plrs and plrs.LocalPlayer wait(1)
