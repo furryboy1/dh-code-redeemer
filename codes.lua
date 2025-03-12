@@ -15,6 +15,7 @@ return {
         'VIP',
         '2025',
         'Duck',
-        'Watch'
+        'Watch',
+        'Quack'
     }
 }
