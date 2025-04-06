@@ -1,7 +1,7 @@
 -- made by furryboy, fuck you skids
 -- https://github.com/FurryBoyYT/dh-code-redeemer/raw/refs/heads/main/codes.lua
 return {
-    totalcash = 3390005,
+    totalcash = 3640005,
     credit = 'FurryBoy',
     codes = {
         'TRADEME!',
@@ -17,6 +17,7 @@ return {
         'Duck',
         'Watch',
         'Quack',
-        '50MDHC'
+        '50MDHC',
+        'MIDNIGHT'
     }
 }
