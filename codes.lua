@@ -1,8 +1,9 @@
 -- made by furryboy, fuck you skids
--- https://raw.githubusercontent.com/FurryBoyYT/dh-code-redeemer/refs/heads/main/codes.lua
+-- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua
 return {
     totalcash = 3640005,
     credit = 'FurryBoy',
+    rate = 10,
     codes = {
         'TRADEME!',
         'DAUP',
