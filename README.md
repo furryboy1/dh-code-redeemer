@@ -1,4 +1,4 @@
 Redeemer script:
 ```lua
-loadstring(game:HttpGet("https://github.com/FurryBoyYT/dh-code-redeemer/raw/refs/heads/main/script"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FurryBoyYT/dh-code-redeemer/refs/heads/main/script"))()
 ```

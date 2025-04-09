@@ -1,5 +1,5 @@
 -- made by furryboy, fuck you skids
--- https://github.com/FurryBoyYT/dh-code-redeemer/raw/refs/heads/main/codes.lua
+-- https://raw.githubusercontent.com/FurryBoyYT/dh-code-redeemer/refs/heads/main/codes.lua
 return {
     totalcash = 3640005,
     credit = 'FurryBoy',

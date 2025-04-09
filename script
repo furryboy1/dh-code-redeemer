@@ -1,6 +1,6 @@
--- https://github.com/FurryBoyYT/dh-code-redeemer/raw/refs/heads/main/codes.lua
+-- https://raw.githubusercontent.com/FurryBoyYT/dh-code-redeemer/refs/heads/main/codes.lua
 if not game:IsLoaded()then game.Loaded:Wait()wait(1)end
-local codes = loadstring(game:HttpGet("https://github.com/FurryBoyYT/dh-code-redeemer/raw/refs/heads/main/codes.lua"))()
+local codes = loadstring(game:HttpGet("https://raw.githubusercontent.com/FurryBoyYT/dh-code-redeemer/refs/heads/main/codes.lua"))()
 local plrs = cloneref(game:GetService("Players"))
 local MainEvent = cloneref(game:GetService("ReplicatedStorage")).MainEvent
 local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
