@@ -1,7 +1,7 @@
 -- made by furryboy, fuck you skids
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua
 return {
-    totalcash = 3640005,
+    totalcash = 3990005,
     credit = 'FurryBoy',
     rate = 10,
     codes = {
@@ -19,6 +19,8 @@ return {
         'Watch',
         'Quack',
         '50MDHC',
-        'MIDNIGHT'
+        'MIDNIGHT',
+        'Easter25',
+        'Sushi'
     }
 }
