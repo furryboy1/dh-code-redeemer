@@ -16,6 +16,6 @@ for index, code in pairs(codes.codes) do
     MainEvent:FireServer("EnterPromoCode", code)
     print("Redeemed Code [ " .. index .. " / " .. #codes.codes .. " ]: " .. code)
     if #codes.codes == 0 then break end
-    task.wait(codes.rate) -- redeeming codes in da hood has a rate limit of atleast 6 seconds but i recommend 10 seconds for safety reasons
+    task.wait(codes.rate) -- redeeming codes in da hood has a rate limit
 end
 print("Finished redeeming!")
