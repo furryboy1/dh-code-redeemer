@@ -1,21 +1,43 @@
+-- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua
 if not game:IsLoaded()then game.Loaded:Wait()wait(1)end
+if game.PlaceId ~= 2788229376 then
+    warn("This script only works for Da Hood.")
+    warn("If you are trying to run this script, please ensure you are in the correct game.")
+    if setclipboard then
+        setclipboard("https://www.roblox.com/games/2788229376/Da-Hood")
+        print("Copied Da Hood game link to your clipboard.")
+    end
+    return
+end
+local cloneref = cloneref or function(o) return o end
 local codes = loadstring(game:HttpGet("https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua"))()
 local plrs = cloneref(game:GetService("Players"))
-local MainEvent = cloneref(game:GetService("ReplicatedStorage")).MainEvent
+local mainevent = cloneref(game:GetService("ReplicatedStorage")).MainEvent
 local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
 formatted = formatted:reverse():gsub("^,", "")
 
-print("Credits:", codes.credit)
-print("Total DHC will be redeemed:", formatted)
+print("Credits: "..codes.credit)
+print("Total DHC will be redeemed: "..formatted)
 
-repeat wait(0.25)until plrs and plrs.LocalPlayer wait(1)
-repeat wait(0.25)until plrs.LocalPlayer.Character and plrs.LocalPlayer.Character:FindFirstChild("Humanoid")and plrs.LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR")wait(2)
+local num_codes = #codes.codes
+local rate = codes.rate
+local total_seconds = (num_codes > 0 and num_codes - 1 or 0) * rate
+local hours = math.floor(total_seconds / 3600)
+local minutes = math.floor((total_seconds % 3600) / 60)
+local seconds = total_seconds % 60
+local time_str = "Estimated time to redeem all codes: "
+if hours > 0 then time_str = time_str .. string.format("%dh ", hours) end
+if minutes > 0 then time_str = time_str .. string.format("%dm ", minutes) end
+if seconds > 0 or (hours == 0 and minutes == 0) then time_str = time_str .. string.format("%ds", seconds) end
+print(time_str)
 
-for index, code in pairs(codes.codes) do
-    MainEvent:FireServer("EnterPromoCode", code)
-    print("Redeemed Code [ " .. index .. " / " .. #codes.codes .. " ]: " .. code)
-    if #codes.codes == 0 then break end
+repeat print("Waiting for player to load...")wait(2)until plrs and plrs.LocalPlayer wait(1)
+repeat print("Waiting for character to fully load...")wait(2)until plrs.LocalPlayer.Character and plrs.LocalPlayer.Character:FindFirstChild("Humanoid")and plrs.LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR")wait(2)
+
+for index, codes in pairs(codes.codes) do
+    mainevent:FireServer("EnterPromoCode", code)
+    print("Redeemed Code ["..index.."/"..#codes.codes.."]: "..code)
+    if #codes.codes == 0 then print("Finished redeeming all active codes!") break end
     task.wait(codes.rate) -- redeeming codes in da hood has a rate limit
 end
-print("Finished redeeming!")
