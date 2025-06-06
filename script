@@ -18,7 +18,8 @@ local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
 formatted = formatted:reverse():gsub("^,", "")
 
 print("Credits: "..codes.credit)
-print("Total DHC will be redeemed: "..formatted)
+print("Total activce codes: "..#codes.codes)
+print("Total DHC to be redeemed: "..formatted)
 
 local num_codes = #codes.codes
 local rate = codes.rate
@@ -38,6 +39,9 @@ repeat print("Waiting for character to fully load...")wait(2)until plrs.LocalPla
 for index, code in pairs(codes.codes) do
     mainevent:FireServer("EnterPromoCode", code)
     print("Redeemed Code ["..index.."/"..#codes.codes.."]: "..code)
-    if #codes.codes == 0 then print("Finished redeeming all active codes!") break end
+    if index == #codes.codes then
+        print("Finished redeeming all active codes!")
+        break
+    end
     task.wait(codes.rate) -- redeeming codes in da hood has a rate limit
 end
