@@ -1,5 +1,6 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua
+print("initializing...")
 if not game:IsLoaded()then game.Loaded:Wait()wait(1)end
 if game.PlaceId ~= 2788229376 then
     warn("This script only works for Da Hood.")
@@ -32,9 +33,12 @@ if hours > 0 then time_str = time_str .. string.format("%dh ", hours) end
 if minutes > 0 then time_str = time_str .. string.format("%dm ", minutes) end
 if seconds > 0 or (hours == 0 and minutes == 0) then time_str = time_str .. string.format("%ds", seconds) end
 print(time_str)
-
-repeat print("Waiting for player to load...")wait(2)until plrs and plrs.LocalPlayer wait(1)
-repeat print("Waiting for character to fully load...")wait(2)until plrs.LocalPlayer.Character and plrs.LocalPlayer.Character:FindFirstChild("Humanoid")and plrs.LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR")wait(2)
+print("Waiting for player to load...")
+repeat wait(2) until plrs and plrs.LocalPlayer wait(1)
+print("Waiting for character to fully load...")
+repeat wait(2) until plrs.LocalPlayer.Character and plrs.LocalPlayer.Character:FindFirstChild("Humanoid") and plrs.LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR") wait(2)
+print("Player and character fully loaded!")
+print("Starting to redeem codes...")
 
 for index, code in pairs(codes.codes) do
     mainevent:FireServer("EnterPromoCode", code)
