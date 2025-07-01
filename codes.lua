@@ -6,6 +6,8 @@ return {
     rate = 10,
     codes = {
         'Arcane',
-        'Samurai'
+        'Samurai',
+        'Summer25',
+        'Jellyfish'
     }
 }
