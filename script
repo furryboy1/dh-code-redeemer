@@ -1,12 +1,12 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua
-print("initializing...")
+print("Initializing...")
 if not game:IsLoaded()then game.Loaded:Wait()wait(1)end
 if game.PlaceId ~= 2788229376 then
     warn("This script only works for Da Hood.")
     warn("If you are trying to run this script, please ensure you are in the correct game.")
     if setclipboard then
-        setclipboard("https://www.roblox.com/games/2788229376/Da-Hood")
+        setclipboard("https://roblox.com/games/2788229376")
         print("Copied Da Hood game link to your clipboard.")
     end
     return
@@ -19,7 +19,7 @@ local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
 formatted = formatted:reverse():gsub("^,", "")
 
 print("Credits: "..codes.credit)
-print("Total activce codes: "..#codes.codes)
+print("Total active codes: "..#codes.codes)
 print("Total DHC to be redeemed: "..formatted)
 
 local num_codes = #codes.codes

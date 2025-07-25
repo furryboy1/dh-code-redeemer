@@ -3,7 +3,7 @@
 return {
     totalcash = 1550000,
     credit = 'FurryBoy',
-    rate = 10,
+    rate = 5,
     codes = {
         'Arcane',
         'Samurai',
