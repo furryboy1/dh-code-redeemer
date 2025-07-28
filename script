@@ -11,12 +11,20 @@ if game.PlaceId ~= 2788229376 then
     end
     return
 end
+
+
 local cloneref = cloneref or function(o) return o end
 local codes = loadstring(game:HttpGet("https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua"))()
 local plrs = cloneref(game:GetService("Players"))
+local starterGui = cloneref(game:GetService("StarterGui"))
 local mainevent = cloneref(game:GetService("ReplicatedStorage")).MainEvent
 local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
 formatted = formatted:reverse():gsub("^,", "")
+
+local args = ({...})
+if args.toggleConsole then
+    starterGui:SetCore("DevConsoleVisible", true)
+end
 
 print("Credits: "..codes.credit)
 print("Total active codes: "..#codes.codes)
