@@ -21,11 +21,6 @@ local mainevent = cloneref(game:GetService("ReplicatedStorage")).MainEvent
 local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
 formatted = formatted:reverse():gsub("^,", "")
 
-local args = ({...})
-if args.toggleConsole then
-    starterGui:SetCore("DevConsoleVisible", true)
-end
-
 print("Credits: "..codes.credit)
 print("Total active codes: "..#codes.codes)
 print("Total DHC to be redeemed: "..formatted)
