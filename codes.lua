@@ -8,6 +8,9 @@ return {
         'Arcane',
         'Samurai',
         'Summer25',
-        'Jellyfish'
+        'Jellyfish',
+        'BUBU',
+        'MUSIC',
+        'KINGPIN'
     }
 }
