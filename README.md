@@ -4,5 +4,3 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/furryboy1/dh-code-red
 ```
 
 https://discord.gg/pSeWuRFbNv
-https://dsc.gg/dhcodes
-https://dsc.gg/dahoodcodes
