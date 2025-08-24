@@ -19,66 +19,24 @@ end
 local codes = loadstring(game:HttpGet("https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua"))()
 local plrs = game:GetService("Players")
 local starterGui = game:GetService("StarterGui")
-local hs = game:GetService("HttpService")
 local mainevent = game:GetService("ReplicatedStorage").MainEvent
 local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
 formatted = formatted:reverse():gsub("^,", "")
 
-dprint("Credits: " .. codes.credit)
+dprint("Credit: " .. codes.credit)
 dprint("Total active codes: " .. #codes.codes)
 dprint("Total DHC to be redeemed: " .. formatted)
 
-local num_codes = #codes.codes
-local rate = codes.rate
-local total_seconds = (num_codes > 0 and num_codes - 1 or 0) * rate
-local hours = math.floor(total_seconds / 3600)
-local minutes = math.floor((total_seconds % 3600) / 60)
-local seconds = total_seconds % 60
-local time_str = "Calculated ETA to redeem all codes: "
-
-if hours > 0 then time_str = time_str .. string.format("%dh ", hours) end
-if minutes > 0 then time_str = time_str .. string.format("%dm ", minutes) end
-if seconds > 0 or (hours == 0 and minutes == 0) then time_str = time_str .. string.format("%ds", seconds) end
-print(time_str)
-
 dprint("Waiting for player to fully load...")
-plrs.PlayerAdded:Wait()
 local localPlayer = plrs.LocalPlayer
+if not localPlayer then
+    localPlayer = plrs.PlayerAdded:Wait()
+end
 local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 character:WaitForChild("Humanoid")
 character:WaitForChild("FULLY_LOADED_CHAR")
-
 dprint("Player and character fully loaded!")
 task.wait(2)
-
-local redeemed_codes = {}
-local info_codes = plrs.LocalPlayer:FindFirstChild("DataFolder") and plrs.LocalPlayer.DataFolder:FindFirstChild("Information") and plrs.LocalPlayer.DataFolder.Information:FindFirstChild("Codes")
-
-if info_codes then
-    local success, decoded = pcall(function()
-        return hs:JSONDecode(info_codes.Value)
-    end)
-    if success and type(decoded) == "table" then
-        redeemed_codes = decoded
-    end
-end
-
-local not_redeemed = {}
-local already = {}
-for _, code in ipairs(codes.codes) do
-    if redeemed_codes[code] then
-        table.insert(already, code)
-    else
-        table.insert(not_redeemed, code)
-    end
-end
-
-if #already > 0 then
-    print("Already redeemed these codes:", table.concat(already, ", "))
-    if #not_redeemed == 0 then
-        return
-    end
-end
 
 dprint("Starting to redeem codes...")
 for index, code in pairs(codes.codes) do
