@@ -1,7 +1,7 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua
 local function dprint(...)
-    dprint("[DH CODE REDEEMER]", ...)
+    print("[DH CODE REDEEMER]", ...)
 end
 
 dprint("Initializing...")
