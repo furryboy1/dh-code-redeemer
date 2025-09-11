@@ -1,17 +1,22 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua
-local function dprint(...)
-    print("[DH CODE REDEEMER]", ...)
-end
+local function dprint(...) print("[DHR]", ...) end
+local function dwarn(...) warn("[DHR]", ...) end
 
 dprint("Initializing...")
-if not game:IsLoaded()then game.Loaded:Wait()wait(1)end
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
 if game.PlaceId ~= 2788229376 then
-    warn("This script only works for Da Hood.")
-    warn("If you are trying to run this script, please ensure you are in the correct game.")
+    dwarn("This script only works for Da Hood.")
+    dwarn("If you are trying to run this script, please ensure you are in the correct game.")
+
     if setclipboard then
-        setclipboard("https://roblox.com/games/2788229376")
-        dprint("Copied Da Hood game link to your clipboard.")
+        pcall(function()
+            setclipboard("https://roblox.com/games/2788229376")
+            dprint("Copied Da Hood game link to your clipboard.")
+        end)
     end
     return
 end
@@ -23,15 +28,13 @@ local mainevent = game:GetService("ReplicatedStorage").MainEvent
 local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
 formatted = formatted:reverse():gsub("^,", "")
 
-dprint("Credit: " .. codes.credit)
+dprint("Credits: " .. codes.credit)
 dprint("Total active codes: " .. #codes.codes)
-dprint("Total DHC to be redeemed: " .. formatted)
+dprint("Total DHC in codes: " .. formatted)
 
 dprint("Waiting for player to fully load...")
 local localPlayer = plrs.LocalPlayer
-if not localPlayer then
-    localPlayer = plrs.PlayerAdded:Wait()
-end
+if not localPlayer then localPlayer = plrs.PlayerAdded:Wait() end
 local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 character:WaitForChild("Humanoid")
 character:WaitForChild("FULLY_LOADED_CHAR")
