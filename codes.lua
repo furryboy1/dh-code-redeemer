@@ -1,12 +1,13 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua
 return {
-    totalcash = 848999,
+    totalcash = 948999,
     credit = "FurryBoy",
     rate = 5,
     codes = {
         "BRAINROT",
         "LUXE",
-        "TURBO"
+        "TURBO",
+        "Sep2025"
     }
 }
