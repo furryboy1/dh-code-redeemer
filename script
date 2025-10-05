@@ -1,7 +1,9 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua
+_G.__DH_REDEEMER_LOADED = true
+if _G.__DH_REDEEMER_LOADED then return end
+
 local function dprint(...) print("[DHR]", ...) end
-local function dwarn(...) warn("[DHR]", ...) end
 
 dprint("Initializing...")
 if not game:IsLoaded() then
@@ -9,8 +11,9 @@ if not game:IsLoaded() then
 end
 
 if game.PlaceId ~= 2788229376 then
-    dwarn("This script only works for Da Hood.")
-    dwarn("If you are trying to run this script, please ensure you are in the correct game.")
+    _G.__DH_REDEEMER_LOADED = false
+    dprint("This script only works for Da Hood.")
+    dprint("If you are trying to run this script, please ensure you are in the correct game.")
 
     if setclipboard then
         pcall(function()
@@ -51,3 +54,4 @@ for index, code in pairs(codes.codes) do
     end
     task.wait(codes.rate)
 end
+_G.__DH_REDEEMER_LOADED = false
