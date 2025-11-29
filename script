@@ -1,7 +1,7 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua
-_G.__DH_REDEEMER_LOADED = true
 if _G.__DH_REDEEMER_LOADED then return end
+_G.__DH_REDEEMER_LOADED = true
 
 local function dprint(...) print("[DHR]", ...) end
 
