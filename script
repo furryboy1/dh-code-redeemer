@@ -35,6 +35,22 @@ dprint("Credits: " .. codes.credit)
 dprint("Total active codes: " .. #codes.codes)
 dprint("Total DHC in codes: " .. formatted)
 
+-- announcements
+if codes.announcement and #codes.announcement > 0 then
+    dprint("Announcement(s):")
+    for _, announcement in pairs(codes.announcement) do
+        dprint(" - " .. announcement)
+    end
+end
+
+-- changelogs
+if codes.changelogs and #codes.changelogs > 0 then
+    dprint("Changelog(s):")
+    for _, changelog in pairs(codes.changelogs) do
+        dprint(" - " .. changelog)
+    end
+end
+
 dprint("Waiting for player to fully load...")
 local localPlayer = plrs.LocalPlayer
 if not localPlayer then localPlayer = plrs.PlayerAdded:Wait() end
