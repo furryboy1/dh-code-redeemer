@@ -1,17 +1,16 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/Script
-if _G.__DH_REDEEMER_LOADED then return end
-_G.__DH_REDEEMER_LOADED = true
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+local _env = getgenv and getgenv() or _G
+if getgenv().__DH_REDEEMER_LOADED then return end
+getgenv().__DH_REDEEMER_LOADED = true
 
 local function dprint(...) print("[DHR]", ...) end
-
 dprint("Initializing...")
-if not game:IsLoaded() then
-    game.Loaded:Wait()
-end
 
 if game.PlaceId ~= 2788229376 then
-    _G.__DH_REDEEMER_LOADED = false
+    getgenv().__DH_REDEEMER_LOADED = false
     dprint("This script only works for Da Hood.")
     dprint("If you are trying to run this script, please ensure you are in the correct game.")
 
@@ -70,4 +69,5 @@ for index, code in pairs(codes.codes) do
     end
     task.wait(codes.rate)
 end
-_G.__DH_REDEEMER_LOADED = false
+
+getgenv().__DH_REDEEMER_LOADED = false
