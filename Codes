@@ -1,7 +1,7 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/Codes
 return {
-    totalcash = 2467000, -- Total cash from all codes
+    totalcash = 2867000, -- Total cash from all codes
     credit = "FurryBoy", -- Credits to me!
     rate = 5, -- da hood has redeem ratelimit
     announcement = { -- announcement
@@ -15,6 +15,7 @@ return {
         "VALENTINES2026",
         "DEAGLE",
         "SPRING26",
-        "EASTER26"
+        "EASTER26",
+        "SpringTime26"
     }
 }
