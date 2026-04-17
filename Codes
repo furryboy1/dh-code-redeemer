@@ -1,22 +1,17 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/Codes
 return {
-    totalcash = 3467000, -- Total cash from all codes
+    totalcash = 600000, -- Total cash from all codes
     credit = "FurryBoy", -- Credits to me!
     rate = 5, -- da hood has redeem ratelimit
     announcement = { -- announcement
         ""
     },
     changelogs = { -- changelogs
-        "1 new code added"
+        "2 new code added",
+        "6 expired codes removed"
     },
     codes = { -- codes list
-        "Sep2025",
-        "VALENTINES2026",
-        "DEAGLE",
-        "SPRING26",
-        "EASTER26",
-        "SpringTime26",
         "BALLOON",
         "BOSS"
     }
