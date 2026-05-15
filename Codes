@@ -8,11 +8,10 @@ return {
         ""
     },
     changelogs = { -- changelogs
-        "1 new code added"
+        "1 expired code"
     },
     codes = { -- codes list
         "BALLOON",
-        "BOSS",
-        "BUILD"
+        "BOSS"
     }
 }
