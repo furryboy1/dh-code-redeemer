@@ -8,11 +8,9 @@ return {
         ""
     },
     changelogs = { -- changelogs
-        "1 new code added"
+        ""
     },
     codes = { -- codes list
-        "BALLOON",
-        "BOSS",
         "WORLDCUP26"
     }
 }
