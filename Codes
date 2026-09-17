@@ -5,7 +5,7 @@ return {
     credit = "FurryBoy", -- Credits to me!
     rate = 5, -- da hood has redeem ratelimit
     announcement = { -- announcement
-        "New code BUFF is out!",
+        "New code PVP is out!",
     },
     changelogs = { -- changelogs
         "Removed WORLDCUP26 (expired)",
