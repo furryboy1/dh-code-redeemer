@@ -5,11 +5,9 @@ return {
     credit = "FurryBoy", -- Credits to me!
     rate = 5, -- da hood has redeem ratelimit
     announcement = { -- announcement
-        "New code PVP is out!",
+        "New code ESKETIT is out! ($1,000,000 DHC)",
     },
-    changelogs = { -- changelogs
-        "Removed WORLDCUP26 (expired)",
-    },
+    changelogs = {}, -- changelogs
     codes = { -- active codes list
         "ESKETIT",
         "PRESIDENT",
