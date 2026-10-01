@@ -9,7 +9,7 @@ return {
     },
     changelogs = {}, -- changelogs
     codes = { -- active codes list
-        "MACRO",
+        "MACRO!",
         "ETERNAL",
         "ESKETIT",
         "PRESIDENT",
