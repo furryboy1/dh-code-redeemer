@@ -1,14 +1,15 @@
 -- Made by FurryBoy
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/Codes
 return {
-    totalcash = 3_500_000, -- Total cash from all codes
+    totalcash = 4_500_000, -- Total cash from all codes
     credit = "FurryBoy", -- Credits to me!
     rate = 5, -- da hood has redeem ratelimit
     announcement = { -- announcement
-        "2 NEW CODES ARE OUT! ($1.5M DHC)",
+        "1 NEW CODE IS OUT! ($1M DHC)",
     },
     changelogs = {}, -- changelogs
     codes = { -- active codes list
+        "TURKEY!",
         "HALLOWEEN26",
         "MACRO!",
         "ETERNAL",
