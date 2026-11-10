@@ -4,10 +4,10 @@ return {
     totalcash = 4_500_000, -- Total cash from all codes
     credit = "FurryBoy", -- Credits to me!
     rate = 5, -- da hood has redeem ratelimit
-    announcement = { -- announcement
-        "1 NEW CODE IS OUT! ($1M DHC)",
+    announcement = {}, -- announcement
+    changelogs = { -- changelogs
+        "Added new code TURKEY!",
     },
-    changelogs = {}, -- changelogs
     codes = { -- active codes list
         "TURKEY!",
         "HALLOWEEN26",
