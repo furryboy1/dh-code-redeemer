@@ -237,41 +237,69 @@ task.wait(2)
 -- Read already-redeemed codes
 -- DataFolder.Information.Codes = '{"HAPPYHOLIDAYS25":true,"XMAS2025":true,...}'
 --------------------------------------------------------------------------
-local function getRedeemed()
-    local set = {}
+local function getCodesObject()
     local dataFolder = localPlayer:WaitForChild("DataFolder", 30)
     local info = dataFolder and dataFolder:WaitForChild("Information", 30)
-    local codesObj = info and info:WaitForChild("Codes", 30)
-    if not codesObj then return set, false end
+    return info and info:WaitForChild("Codes", 30)
+end
 
+-- Parses the current value. Returns (set, count) or nil if not loaded / not valid JSON yet.
+local function parseCodes(codesObj)
+    local set, count = {}, 0
     if codesObj:IsA("ValueBase") then
         local raw = codesObj.Value
-        if typeof(raw) ~= "string" or raw == "" then return set, true end
+        if typeof(raw) ~= "string" or raw == "" then return nil end
         local decoded, data = pcall(HttpService.JSONDecode, HttpService, raw)
-        if not decoded or type(data) ~= "table" then return set, false end
+        if not decoded or type(data) ~= "table" then return nil end
         for k, v in pairs(data) do
             if type(k) == "string" and v then
-                set[k:lower()] = true
+                set[k] = true
+                count += 1
             elseif type(v) == "string" then
-                set[v:lower()] = true
+                set[v] = true
+                count += 1
             end
         end
     else
         for _, child in ipairs(codesObj:GetChildren()) do
-            set[child.Name:lower()] = true
+            set[child.Name] = true
+            count += 1
         end
     end
-    return set, true
+    return set, count
 end
 
-local redeemed, readOk = getRedeemed()
+-- Waits until the Codes value has actually loaded (non-empty, valid JSON with entries).
+-- Gives up after `timeout` seconds and returns whatever it has (may be empty for new players).
+local function getRedeemed(timeout)
+    local codesObj = getCodesObject()
+    if not codesObj then return {}, false end
+
+    local deadline = os.clock() + (timeout or 0)
+    local lastSet
+    repeat
+        local set, count = parseCodes(codesObj)
+        if set then
+            lastSet = set
+            if count > 0 then return set, true end
+        end
+        if os.clock() >= deadline then break end
+        task.wait(0.25)
+    until false
+
+    return lastSet or {}, lastSet ~= nil
+end
+
+dprint("Waiting for redeemed codes to load...")
+Notify("Checking codes", "Waiting for your redeemed codes to load...", "info", 3)
+local redeemed, readOk = getRedeemed(20)
 if not readOk then
     log("Couldn't read redeemed codes", "Will try every code instead.", "warning", 6)
 end
 
 local pending = {}
 for _, code in ipairs(codes.codes) do
-    if not redeemed[code:lower()] then
+    if not redeemed[code] then
         table.insert(pending, code)
     end
 end
@@ -301,10 +329,10 @@ end
 
 -- Re-check to see which ones actually went through
 task.wait(2)
-local after = getRedeemed()
+local after = getRedeemed(0)
 local confirmed, failed = 0, {}
 for _, code in ipairs(pending) do
-    if after[code:lower()] then
+    if after[code] then
         confirmed += 1
     else
         table.insert(failed, code)
