@@ -1,6 +1,11 @@
 -- Made by FurryBoy
--- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/Script
+-- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/script
 if not game:IsLoaded() then game.Loaded:Wait() end
+
+-- Bump this AND version.txt in the repo together on every release.
+local VERSION = "1.1.0"
+local REPO = "https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/"
+local LOADSTRING = `loadstring(game:HttpGet("{REPO}script"))()`
 
 local _env = getgenv and getgenv() or _G
 if _env.__DH_REDEEMER_LOADED then return end
@@ -187,10 +192,50 @@ if game.PlaceId ~= 2788229376 then
 end
 
 --------------------------------------------------------------------------
+-- Version check
+-- The loadstring always pulls the latest script, so a mismatch means
+-- someone pasted an old copy of the source instead of using the loadstring.
+--------------------------------------------------------------------------
+local function parseVersion(v)
+    local parts = {}
+    for n in tostring(v):gmatch("%d+") do table.insert(parts, tonumber(n)) end
+    return parts
+end
+
+local function isOlder(a, b) -- true if version a < version b
+    local pa, pb = parseVersion(a), parseVersion(b)
+    for i = 1, math.max(#pa, #pb) do
+        local x, y = pa[i] or 0, pb[i] or 0
+        if x ~= y then return x < y end
+    end
+    return false
+end
+
+do
+    local fetched, remote = pcall(game.HttpGet, game, REPO .. "version.txt")
+    remote = fetched and remote and remote:match("^%s*(.-)%s*$")
+
+    if not remote or remote == "" or remote:find("404") then
+        dprint("Version check failed, continuing anyway.")
+    elseif isOlder(VERSION, remote) then
+        log("Outdated version", `You're on v{VERSION}, latest is v{remote}. Use the loadstring instead of the source!`, "warning", 10)
+        dprint("Loadstring: " .. LOADSTRING)
+        if setclipboard then
+            pcall(function()
+                setclipboard(LOADSTRING)
+                Notify("Loadstring copied", "The up-to-date loadstring is on your clipboard.", "info", 8)
+            end)
+        end
+    else
+        dprint(`Version v{VERSION} (up to date)`)
+    end
+end
+
+--------------------------------------------------------------------------
 -- Fetch code list
 --------------------------------------------------------------------------
 local ok, codes = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua"))()
+    return loadstring(game:HttpGet(REPO .. "codes.lua"))()
 end)
 if not ok or type(codes) ~= "table" or type(codes.codes) ~= "table" then
     _env.__DH_REDEEMER_LOADED = false
