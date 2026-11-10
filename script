@@ -3,71 +3,319 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
 local _env = getgenv and getgenv() or _G
-if getgenv().__DH_REDEEMER_LOADED then return end
-getgenv().__DH_REDEEMER_LOADED = true
+if _env.__DH_REDEEMER_LOADED then return end
+_env.__DH_REDEEMER_LOADED = true
+
+local plrs         = game:GetService("Players")
+local HttpService  = game:GetService("HttpService")
+local TweenService = game:GetService("TweenService")
+local CoreGui      = game:GetService("CoreGui")
+
+local localPlayer = plrs.LocalPlayer or plrs.PlayerAdded:Wait()
 
 local function dprint(...) print("[DHR]", ...) end
-dprint("Initializing...")
+
+--------------------------------------------------------------------------
+-- Notification UI
+--------------------------------------------------------------------------
+local Notify
+do
+    local COLORS = {
+        info    = Color3.fromRGB(88, 140, 255),
+        success = Color3.fromRGB(70, 200, 120),
+        warning = Color3.fromRGB(255, 180, 60),
+        error   = Color3.fromRGB(240, 80, 80),
+    }
+
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "DHR_Notifications"
+    gui.ResetOnSpawn = false
+    gui.IgnoreGuiInset = true
+    gui.DisplayOrder = 999
+    gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    if syn and syn.protect_gui then pcall(syn.protect_gui, gui) end
+
+    local parented = pcall(function()
+        gui.Parent = (gethui and gethui()) or CoreGui
+    end)
+    if not parented then
+        gui.Parent = localPlayer:WaitForChild("PlayerGui")
+    end
+
+    local holder = Instance.new("Frame")
+    holder.Name = "Holder"
+    holder.AnchorPoint = Vector2.new(1, 1)
+    holder.Position = UDim2.new(1, -16, 1, -16)
+    holder.Size = UDim2.new(0, 300, 1, -32)
+    holder.BackgroundTransparency = 1
+    holder.Parent = gui
+
+    local layout = Instance.new("UIListLayout")
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+    layout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+    layout.Padding = UDim.new(0, 8)
+    layout.Parent = holder
+
+    local SLOT_HEIGHT = 64
+    local order = 0
+
+    local function new(class, props)
+        local inst = Instance.new(class)
+        for k, v in pairs(props) do inst[k] = v end
+        return inst
+    end
+
+    function Notify(title, text, kind, duration)
+        kind = COLORS[kind] and kind or "info"
+        duration = duration or 4
+        local accent = COLORS[kind]
+        order += 1
+
+        -- slot reserves space in the list so the card can slide independently
+        local slot = new("Frame", {
+            Name = "Notification",
+            Size = UDim2.new(1, 0, 0, SLOT_HEIGHT),
+            BackgroundTransparency = 1,
+            LayoutOrder = order,
+            Parent = holder,
+        })
+
+        local card = new("TextButton", {
+            Text = "",
+            AutoButtonColor = false,
+            Size = UDim2.new(1, 0, 1, 0),
+            Position = UDim2.new(1, 24, 0, 0),
+            BackgroundColor3 = Color3.fromRGB(22, 22, 26),
+            BorderSizePixel = 0,
+            ClipsDescendants = true,
+            Parent = slot,
+        })
+        new("UICorner", { CornerRadius = UDim.new(0, 8), Parent = card })
+        new("UIStroke", { Color = Color3.fromRGB(48, 48, 56), Thickness = 1, Parent = card })
+
+        new("Frame", {
+            Size = UDim2.new(0, 3, 1, 0),
+            BackgroundColor3 = accent,
+            BorderSizePixel = 0,
+            Parent = card,
+        })
+
+        new("TextLabel", {
+            Text = title,
+            Font = Enum.Font.GothamBold,
+            TextSize = 14,
+            TextColor3 = Color3.fromRGB(245, 245, 250),
+            TextXAlignment = Enum.TextXAlignment.Left,
+            TextTruncate = Enum.TextTruncate.AtEnd,
+            BackgroundTransparency = 1,
+            Position = UDim2.new(0, 14, 0, 8),
+            Size = UDim2.new(1, -24, 0, 18),
+            Parent = card,
+        })
+
+        new("TextLabel", {
+            Text = text or "",
+            Font = Enum.Font.Gotham,
+            TextSize = 13,
+            TextColor3 = Color3.fromRGB(190, 190, 200),
+            TextXAlignment = Enum.TextXAlignment.Left,
+            TextYAlignment = Enum.TextYAlignment.Top,
+            TextWrapped = true,
+            TextTruncate = Enum.TextTruncate.AtEnd,
+            BackgroundTransparency = 1,
+            Position = UDim2.new(0, 14, 0, 28),
+            Size = UDim2.new(1, -24, 0, 30),
+            Parent = card,
+        })
+
+        local bar = new("Frame", {
+            AnchorPoint = Vector2.new(0, 1),
+            Position = UDim2.new(0, 0, 1, 0),
+            Size = UDim2.new(1, 0, 0, 2),
+            BackgroundColor3 = accent,
+            BorderSizePixel = 0,
+            Parent = card,
+        })
+
+        local closed = false
+        local function close()
+            if closed then return end
+            closed = true
+            local out = TweenService:Create(card, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+                { Position = UDim2.new(1, 24, 0, 0) })
+            out:Play()
+            out.Completed:Wait()
+            local shrink = TweenService:Create(slot, TweenInfo.new(0.2, Enum.EasingStyle.Quad),
+                { Size = UDim2.new(1, 0, 0, 0) })
+            shrink:Play()
+            shrink.Completed:Wait()
+            slot:Destroy()
+        end
+
+        card.MouseButton1Click:Connect(function() task.spawn(close) end)
+
+        TweenService:Create(card, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
+            { Position = UDim2.new(0, 0, 0, 0) }):Play()
+        TweenService:Create(bar, TweenInfo.new(duration, Enum.EasingStyle.Linear),
+            { Size = UDim2.new(0, 0, 0, 2) }):Play()
+
+        task.delay(duration, close)
+    end
+end
+
+local function log(title, text, kind, duration)
+    dprint(title .. (text and (": " .. text) or ""))
+    Notify(title, text, kind, duration)
+end
+
+--------------------------------------------------------------------------
+-- Game check
+--------------------------------------------------------------------------
+log("DH Code Redeemer", "Initializing...", "info")
 
 if game.PlaceId ~= 2788229376 then
-    getgenv().__DH_REDEEMER_LOADED = false
-    dprint("This script only works for Da Hood.")
-    dprint("If you are trying to run this script, please ensure you are in the correct game.")
-
+    _env.__DH_REDEEMER_LOADED = false
+    log("Wrong game", "This script only works in Da Hood.", "error", 6)
     if setclipboard then
         pcall(function()
             setclipboard("https://roblox.com/games/2788229376")
-            dprint("Copied Da Hood game link to your clipboard.")
+            log("Link copied", "Da Hood game link copied to your clipboard.", "info", 6)
         end)
     end
     return
 end
 
-local codes = loadstring(game:HttpGet("https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua"))()
-local plrs = game:GetService("Players")
-local starterGui = game:GetService("StarterGui")
-local mainevent = game:GetService("ReplicatedStorage").MainEvent
-local formatted = tostring(codes.totalcash):reverse():gsub("%d%d%d", "%1,")
+--------------------------------------------------------------------------
+-- Fetch code list
+--------------------------------------------------------------------------
+local ok, codes = pcall(function()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/codes.lua"))()
+end)
+if not ok or type(codes) ~= "table" or type(codes.codes) ~= "table" then
+    _env.__DH_REDEEMER_LOADED = false
+    log("Failed to load codes", tostring(codes), "error", 8)
+    return
+end
+
+local mainevent = game:GetService("ReplicatedStorage"):WaitForChild("MainEvent")
+
+local formatted = tostring(codes.totalcash or 0):reverse():gsub("%d%d%d", "%1,")
 formatted = formatted:reverse():gsub("^,", "")
 
-dprint("Credits: " .. codes.credit)
+dprint("Credits: " .. tostring(codes.credit))
 dprint("Total active codes: " .. #codes.codes)
 dprint("Total DHC in codes: " .. formatted)
+Notify("Codes loaded", `{#codes.codes} active codes worth ${formatted} DHC`, "info", 5)
 
--- announcements
 if codes.announcement and #codes.announcement > 0 then
     dprint("Announcement(s):")
-    for _, announcement in pairs(codes.announcement) do
+    for _, announcement in ipairs(codes.announcement) do
         dprint(" - " .. announcement)
+        Notify("Announcement", announcement, "warning", 7)
     end
 end
 
--- changelogs
 if codes.changelogs and #codes.changelogs > 0 then
     dprint("Changelog(s):")
-    for _, changelog in pairs(codes.changelogs) do
+    for _, changelog in ipairs(codes.changelogs) do
         dprint(" - " .. changelog)
     end
 end
 
+--------------------------------------------------------------------------
+-- Wait for character
+--------------------------------------------------------------------------
 dprint("Waiting for player to fully load...")
-local localPlayer = plrs.LocalPlayer
-if not localPlayer then localPlayer = plrs.PlayerAdded:Wait() end
 local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 character:WaitForChild("Humanoid")
 character:WaitForChild("FULLY_LOADED_CHAR")
 dprint("Player and character fully loaded!")
 task.wait(2)
 
-dprint("Starting to redeem codes...")
-for index, code in pairs(codes.codes) do
-    mainevent:FireServer("EnterPromoCode", code)
-    dprint(`Redeemed Code [{index}/{#codes.codes}]: {code}`)
-    if index == #codes.codes then
-        dprint("Finished redeeming all active codes!")
-        break
+--------------------------------------------------------------------------
+-- Read already-redeemed codes
+-- DataFolder.Information.Codes = '{"HAPPYHOLIDAYS25":true,"XMAS2025":true,...}'
+--------------------------------------------------------------------------
+local function getRedeemed()
+    local set = {}
+    local dataFolder = localPlayer:WaitForChild("DataFolder", 30)
+    local info = dataFolder and dataFolder:WaitForChild("Information", 30)
+    local codesObj = info and info:WaitForChild("Codes", 30)
+    if not codesObj then return set, false end
+
+    if codesObj:IsA("ValueBase") then
+        local raw = codesObj.Value
+        if typeof(raw) ~= "string" or raw == "" then return set, true end
+        local decoded, data = pcall(HttpService.JSONDecode, HttpService, raw)
+        if not decoded or type(data) ~= "table" then return set, false end
+        for k, v in pairs(data) do
+            if type(k) == "string" and v then
+                set[k:lower()] = true
+            elseif type(v) == "string" then
+                set[v:lower()] = true
+            end
+        end
+    else
+        for _, child in ipairs(codesObj:GetChildren()) do
+            set[child.Name:lower()] = true
+        end
     end
-    task.wait(codes.rate)
+    return set, true
 end
 
-getgenv().__DH_REDEEMER_LOADED = false
+local redeemed, readOk = getRedeemed()
+if not readOk then
+    log("Couldn't read redeemed codes", "Will try every code instead.", "warning", 6)
+end
+
+local pending = {}
+for _, code in ipairs(codes.codes) do
+    if not redeemed[code:lower()] then
+        table.insert(pending, code)
+    end
+end
+
+local skipped = #codes.codes - #pending
+dprint(`Already redeemed: {skipped} | To redeem: {#pending}`)
+
+if #pending == 0 then
+    log("Nothing to redeem", `You've already redeemed all {#codes.codes} codes.`, "success", 6)
+    _env.__DH_REDEEMER_LOADED = false
+    return
+end
+
+Notify("Starting", `Redeeming {#pending} new code(s), skipping {skipped} already redeemed.`, "info", 5)
+
+--------------------------------------------------------------------------
+-- Redeem
+--------------------------------------------------------------------------
+for index, code in ipairs(pending) do
+    mainevent:FireServer("EnterPromoCode", code)
+    dprint(`Redeemed Code [{index}/{#pending}]: {code}`)
+    Notify(`Code {index}/{#pending}`, code, "info", 2.5)
+    if index < #pending then
+        task.wait(codes.rate or 1)
+    end
+end
+
+-- Re-check to see which ones actually went through
+task.wait(2)
+local after = getRedeemed()
+local confirmed, failed = 0, {}
+for _, code in ipairs(pending) do
+    if after[code:lower()] then
+        confirmed += 1
+    else
+        table.insert(failed, code)
+    end
+end
+
+if #failed == 0 then
+    log("Done!", `Redeemed {confirmed} new code(s).`, "success", 6)
+else
+    log("Finished", `{confirmed} redeemed, {#failed} didn't go through.`, "warning", 7)
+    dprint("Not confirmed: " .. table.concat(failed, ", "))
+end
+
+_env.__DH_REDEEMER_LOADED = false
