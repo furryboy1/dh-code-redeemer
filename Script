@@ -239,7 +239,7 @@ if not ok or type(codes) ~= "table" or type(codes.codes) ~= "table" then
 end
 
 dprint("Credits: " .. tostring(codes.credit))
-Notify("Credits", `DH Codes Redeemer\nmuch love from <b>FurryBoy</b> {utf8.char(0xE000)} :3`, "rainbow", 6)
+Notify("Credits", `DH Codes Redeemer\nmuch love from <b>FurryBoy</b>{utf8.char(0xE000)} :3`, "rainbow", 10)
 task.wait(1.5)
 
 --------------------------------------------------------------------------
@@ -309,11 +309,11 @@ end
 --------------------------------------------------------------------------
 -- Wait for character
 --------------------------------------------------------------------------
-dprint("Waiting for player to fully load...")
+log("Data loading", "Waiting for player to fully load...", "info", 5)
 local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 character:WaitForChild("Humanoid")
 character:WaitForChild("FULLY_LOADED_CHAR")
-dprint("Player and character fully loaded!")
+log("Data loaded","Player and character fully loaded!\nRedeeming codes...", "success", 5)
 task.wait(2)
 
 --------------------------------------------------------------------------
@@ -367,17 +367,18 @@ local function getRedeemed(timeout)
             if count > 0 then return set, true end
         end
         if os.clock() >= deadline then break end
-        task.wait(0.25)
+        task.wait() -- 0.25
     until false
 
     return lastSet or {}, lastSet ~= nil
 end
 
 dprint("Waiting for redeemed codes to load...")
-Notify("Checking codes", "Waiting for your redeemed codes to load...", "info", 3)
+--log("Checking codes", "Waiting for your redeemed codes to load...", "info", 3)
 local redeemed, readOk = getRedeemed(20)
 if not readOk then
-    log("Couldn't read redeemed codes", "Will try every code instead.", "warning", 6)
+    dprint("Redeemed codes not loaded, will try every code instead.")
+    --log("Couldn't read redeemed codes", "Will try every code instead.", "warning", 6)
 end
 
 local pending = {}
@@ -391,7 +392,7 @@ local skipped = #codes.codes - #pending
 dprint(`Already redeemed: {skipped} | To redeem: {#pending}`)
 
 if #pending == 0 then
-    log("Nothing to redeem", `You've already redeemed all {#codes.codes} codes.`, "success", 6)
+    log("None redeemed", `All {#codes.codes} codes were already redeemed.`, "success", 6)
     _env.__DH_REDEEMER_LOADED = false
     return
 end
@@ -411,7 +412,7 @@ for index, code in ipairs(pending) do
 end
 
 -- Re-check to see which ones actually went through
-task.wait(2)
+--task.wait(2)
 local after = getRedeemed(0)
 local confirmed, failed = 0, {}
 for _, code in ipairs(pending) do
