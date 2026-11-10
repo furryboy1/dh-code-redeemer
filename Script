@@ -216,11 +216,11 @@ end
 
 if game.PlaceId ~= 2788229376 then
     _env.__DH_REDEEMER_LOADED = false
-    log("Wrong game", "This script only works in Da Hood.", "error", 6)
+    log("Wrong game", "This script only works in Da Hood.", "error", 7)
     if setclipboard then
         pcall(function()
             setclipboard("https://roblox.com/games/2788229376")
-            log("Link copied", "Da Hood game link copied to your clipboard.", "info", 6)
+            log("Link copied", "Da Hood game link copied to your clipboard.", "info", 7)
         end)
     end
     return
@@ -238,8 +238,8 @@ if not ok or type(codes) ~= "table" or type(codes.codes) ~= "table" then
     return
 end
 
-dprint("Credits: " .. tostring(codes.credit))
-Notify("Credits", `DH Codes Redeemer\nmuch love from <b>FurryBoy</b>{utf8.char(0xE000)} :3`, "rainbow", 10)
+--dprint("Credits: " .. tostring(codes.credit))
+log("Credits", `Da Hood Codes Redeemer\nmuch love from <b>{tostring(codes.credit)}</b>{utf8.char(0xE000)} :3`, "rainbow", 10)
 task.wait(1.5)
 
 --------------------------------------------------------------------------
@@ -392,7 +392,7 @@ local skipped = #codes.codes - #pending
 dprint(`Already redeemed: {skipped} | To redeem: {#pending}`)
 
 if #pending == 0 then
-    log("None redeemed", `All {#codes.codes} codes were already redeemed.`, "success", 6)
+    log("None redeemed", `All {#codes.codes} codes were already redeemed.`, "success", 7)
     _env.__DH_REDEEMER_LOADED = false
     return
 end
@@ -424,7 +424,7 @@ for _, code in ipairs(pending) do
 end
 
 if #failed == 0 then
-    log("Done!", `Redeemed {confirmed} new code(s).`, "success", 6)
+    log("Done!", `Redeemed {confirmed} new code(s).`, "success", 7)
 else
     log("Finished", `{confirmed} redeemed, {#failed} didn't go through.`, "warning", 7)
     dprint("Not confirmed: " .. table.concat(failed, ", "))
