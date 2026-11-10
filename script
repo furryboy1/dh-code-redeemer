@@ -2,7 +2,7 @@
 -- https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/script
 if not game:IsLoaded() then game.Loaded:Wait() end
 
--- Bump this AND version.txt in the repo together on every release.
+-- Bump this AND version in the repo together on every release.
 local VERSION = "1.1.0"
 local REPO = "https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/"
 local LOADSTRING = `loadstring(game:HttpGet("{REPO}script"))()`
@@ -212,7 +212,7 @@ local function isOlder(a, b) -- true if version a < version b
 end
 
 do
-    local fetched, remote = pcall(game.HttpGet, game, REPO .. "version.txt")
+    local fetched, remote = pcall(game.HttpGet, game, REPO .. "version")
     remote = fetched and remote and remote:match("^%s*(.-)%s*$")
 
     if not remote or remote == "" or remote:find("404") then
