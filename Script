@@ -3,7 +3,7 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
 -- Bump this AND version in the repo together on every release.
-local VERSION = "1.1.0"
+local VERSION = "1.1.1"
 
 local REPO = "https://raw.githubusercontent.com/furryboy1/dh-code-redeemer/refs/heads/main/"
 local LOADSTRING = `loadstring(game:HttpGet("{REPO}Script"))()`
@@ -15,6 +15,7 @@ _env.__DH_REDEEMER_LOADED = true
 local plrs         = game:GetService("Players")
 local HttpService  = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
+local RunService   = game:GetService("RunService")
 local CoreGui      = game:GetService("CoreGui")
 
 local localPlayer = plrs.LocalPlayer or plrs.PlayerAdded:Wait()
@@ -31,7 +32,20 @@ do
         success = Color3.fromRGB(70, 200, 120),
         warning = Color3.fromRGB(255, 180, 60),
         error   = Color3.fromRGB(240, 80, 80),
+        rainbow = Color3.new(1, 1, 1), -- white base so the gradient shows its true colors
     }
+
+    -- Rainbow: a hue-shifted ColorSequence rebuilt every frame so it scrolls seamlessly
+    local RAINBOW_SPEED = 0.35 -- full cycles per second
+    local RAINBOW_STEPS = 6
+    local function rainbowSequence(shift)
+        local points = {}
+        for i = 0, RAINBOW_STEPS do
+            local t = i / RAINBOW_STEPS
+            points[i + 1] = ColorSequenceKeypoint.new(t, Color3.fromHSV((t + shift) % 1, 0.75, 1))
+        end
+        return ColorSequence.new(points)
+    end
 
     local gui = Instance.new("ScreenGui")
     gui.Name = "DHR_Notifications"
@@ -98,16 +112,16 @@ do
             Parent = slot,
         })
         new("UICorner", { CornerRadius = UDim.new(0, 8), Parent = card })
-        new("UIStroke", { Color = Color3.fromRGB(48, 48, 56), Thickness = 1, Parent = card })
+        local stroke = new("UIStroke", { Color = Color3.fromRGB(48, 48, 56), Thickness = 1, Parent = card })
 
-        new("Frame", {
+        local side = new("Frame", {
             Size = UDim2.new(0, 3, 1, 0),
             BackgroundColor3 = accent,
             BorderSizePixel = 0,
             Parent = card,
         })
 
-        new("TextLabel", {
+        local titleLabel = new("TextLabel", {
             Text = title,
             Font = Enum.Font.GothamBold,
             TextSize = 14,
@@ -115,6 +129,7 @@ do
             TextXAlignment = Enum.TextXAlignment.Left,
             TextTruncate = Enum.TextTruncate.AtEnd,
             BackgroundTransparency = 1,
+            RichText = true,
             Position = UDim2.new(0, 14, 0, 8),
             Size = UDim2.new(1, -24, 0, 18),
             Parent = card,
@@ -128,6 +143,7 @@ do
             TextXAlignment = Enum.TextXAlignment.Left,
             TextYAlignment = Enum.TextYAlignment.Top,
             TextWrapped = true,
+            RichText = true,
             TextTruncate = Enum.TextTruncate.AtEnd,
             BackgroundTransparency = 1,
             Position = UDim2.new(0, 14, 0, 28),
@@ -143,6 +159,24 @@ do
             BorderSizePixel = 0,
             Parent = card,
         })
+
+        local rainbowConn
+        if kind == "rainbow" then
+            stroke.Color = Color3.new(1, 1, 1)
+            stroke.Thickness = 1.5
+            local gradients = {
+                new("UIGradient", { Parent = stroke }),
+                new("UIGradient", { Parent = side, Rotation = 90 }),
+                new("UIGradient", { Parent = titleLabel }),
+                new("UIGradient", { Parent = bar }),
+            }
+            local start = os.clock()
+            rainbowConn = RunService.Heartbeat:Connect(function()
+                local seq = rainbowSequence((os.clock() - start) * RAINBOW_SPEED)
+                for _, g in ipairs(gradients) do g.Color = seq end
+            end)
+            slot.Destroying:Connect(function() rainbowConn:Disconnect() end)
+        end
 
         local closed = false
         local function close()
@@ -178,7 +212,7 @@ end
 --------------------------------------------------------------------------
 -- Game check
 --------------------------------------------------------------------------
-log("DH Code Redeemer", "Initializing...", "info")
+--log("DH Code Redeemer", "Initializing...", "info")
 
 if game.PlaceId ~= 2788229376 then
     _env.__DH_REDEEMER_LOADED = false
@@ -191,6 +225,22 @@ if game.PlaceId ~= 2788229376 then
     end
     return
 end
+
+--------------------------------------------------------------------------
+-- Fetch code list
+--------------------------------------------------------------------------
+local ok, codes = pcall(function()
+    return loadstring(game:HttpGet(REPO .. "codes.lua"))()
+end)
+if not ok or type(codes) ~= "table" or type(codes.codes) ~= "table" then
+    _env.__DH_REDEEMER_LOADED = false
+    log("Failed to load codes", tostring(codes), "error", 8)
+    return
+end
+
+dprint("Credits: " .. tostring(codes.credit))
+Notify("Credits", `DH Codes Redeemer\nmuch love from <b>FurryBoy</b> {utf8.char(0xE000)} :3`, "rainbow", 6)
+task.wait(1.5)
 
 --------------------------------------------------------------------------
 -- Version check
@@ -232,24 +282,11 @@ do
     end
 end
 
---------------------------------------------------------------------------
--- Fetch code list
---------------------------------------------------------------------------
-local ok, codes = pcall(function()
-    return loadstring(game:HttpGet(REPO .. "codes.lua"))()
-end)
-if not ok or type(codes) ~= "table" or type(codes.codes) ~= "table" then
-    _env.__DH_REDEEMER_LOADED = false
-    log("Failed to load codes", tostring(codes), "error", 8)
-    return
-end
-
 local mainevent = game:GetService("ReplicatedStorage"):WaitForChild("MainEvent")
 
-local formatted = tostring(codes.totalcash or 0):reverse():gsub("%d%d%d", "%1,")
+local formatted = tostring(codes.totalcash or 0):reverse():gsub("(%d%d%d)", "%1,")
 formatted = formatted:reverse():gsub("^,", "")
 
-dprint("Credits: " .. tostring(codes.credit))
 dprint("Total active codes: " .. #codes.codes)
 dprint("Total DHC in codes: " .. formatted)
 Notify("Codes loaded", `{#codes.codes} active codes worth ${formatted} DHC`, "info", 5)
